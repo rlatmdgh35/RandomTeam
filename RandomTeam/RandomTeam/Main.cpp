@@ -1,13 +1,32 @@
 #include "stdafx.h"
 
+int maxNum;
+int input_int;
+
+vector<int> index;
+
+void RemainNumber()
+{
+	printf("남은 숫자는\n");
+
+	for (int i = 0; i < maxNum; i++)
+	{
+		if (i % 6 == 0) cout << endl;
+
+		cout << index[i] << "   ";
+	}
+
+	cout << "입니다." << endl << endl << "입력 : ";
+	cin >> input_int;
+}
+
 int main()
 {
 	int personNum;
-	int teamNum;
-
 	cout << "인원 수를 입력해주세요." << endl;
 	cin >> personNum;
 
+	int teamNum;
 	cout << "몇 팀으로 나눌 건지 입력해주세요." << endl;
 	cin >> teamNum;
 
@@ -15,12 +34,14 @@ int main()
 		return 0;
 
 	int division = personNum / teamNum;
-	int maxNum = division * teamNum;
+	maxNum = (division + 1) * teamNum;
 
-	vector<int> test;
-
-	for (int i = 1; i <= maxNum; i++)
-		test.push_back(i);
+	vector<int> array;
+	for (int i = 0; i < maxNum; i++)
+	{
+		array.push_back(i);
+		index.push_back(i + 1);
+	}
 
 	srand(time(NULL));
 	int rand1, rand2, temp;
@@ -30,51 +51,56 @@ int main()
 		rand1 = rand() % maxNum;
 		rand2 = rand() % maxNum;
 
-		temp = test[rand1];
-		test[rand1] = test[rand2];
-		test[rand2] = temp;
+		temp = array[rand1];
+		array[rand1] = array[rand2];
+		array[rand2] = temp;
 	}
-
+	
+	vector<int> input;
 	for (int i = 0; i < personNum; i++)
 	{
 		system("cls");
 		cout << "숫자를 골라주세요. 남은 숫자는" << endl;
+		RemainNumber();
 
-		vector<int> input;
-
-		for (int j = 0; j < maxNum; j++)
+		bool key = true;
+		while(key)
 		{
-			printf("%d ", test[i]);
-
-			if (j / 6 == 0) cout << endl;
+			if (0 >= input_int || input_int > personNum)
+			{
+				system("cls");
+				cout << "잘못 입력하셨습니다. 다시 입력해주세요." << endl;
+				RemainNumber();
+			}
+			else key = false;
 		}
-		
-		int a;
-		cout << "입니다." << endl;
 
-		input.push_back();
 
 		for (int j = 0; j < i; j++)
 		{
-			if (input[i] == input[j])
+			while (true)
 			{
-				system("cls");
-				cout << "중복되는 숫자 입니다. 다시 입력해주세요." << endl;
-				cin >> input[i];
+				if (input_int == input[j])
+				{
+					system("cls");
+					cout << "중복되는 숫자 입니다. 다시 입력해주세요." << endl;
+					RemainNumber();
+				}
+				else
+				{
+					break;
+				}
 			}
-		}
+		} // Need Fix
 
-		while (0 >= input[i] || input[i] > personNum)
-		{
-			system("cls");
-			cout << "잘못 입력하셨습니다. 다시 입력해주세요." << endl;
-			cin >> input[i];
-		}
+		input.push_back(input_int);
 
 		system("cls");
-		cout << "당신은 " << (test[input[i]] * teamNum / maxNum) + 1 << "번째 팀입니다." << endl; // (test[input] / (maxNum / teamNum)) + 1 -> (test[input] * teamNum / maxNum) + 1
+		int count = input[i] - 1;
+		cout << "당신은 " << (array[count] * teamNum / maxNum) + 1 << "번째 팀입니다." << endl; // (array[input] / (maxNum / teamNum)) + 1 -> (array[input] * teamNum / maxNum) + 1
+		index[count] = 0;
 
-		test[input[i]] = 0;
+		system("pause");
 	}
 
 	return 0;
