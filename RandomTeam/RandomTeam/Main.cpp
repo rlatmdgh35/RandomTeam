@@ -13,7 +13,7 @@ void RemainNumber()
 	{
 		if (i % 6 == 0) cout << endl;
 
-		cout << index[i] << "   ";
+		cout << index[i] << "	   ";
 	}
 
 	cout << "입니다." << endl << endl << "입력 : ";
@@ -34,7 +34,10 @@ int main()
 		return 0;
 
 	int division = personNum / teamNum;
-	maxNum = (division + 1) * teamNum;
+	if (personNum % teamNum == 0)
+		maxNum = division * teamNum;
+	else
+		maxNum = (division + 1) * teamNum;
 
 	vector<int> array;
 	for (int i = 0; i < maxNum; i++)
@@ -60,38 +63,41 @@ int main()
 	for (int i = 0; i < personNum; i++)
 	{
 		system("cls");
-		cout << "숫자를 골라주세요. 남은 숫자는" << endl;
+		cout << "숫자를 골라주세요." << endl;
 		RemainNumber();
 
 		bool key = true;
-		while(key)
+		while (key)
 		{
 			if (0 >= input_int || input_int > personNum)
 			{
 				system("cls");
 				cout << "잘못 입력하셨습니다. 다시 입력해주세요." << endl;
 				RemainNumber();
-			}
+			} // Have to input only int
 			else key = false;
 		}
 
-
-		for (int j = 0; j < i; j++)
+		bool key2 = true;
+		while (key || key2)
 		{
-			while (true)
+			key = false;
+			for (int j = 0; j < i; j++)
 			{
 				if (input_int == input[j])
 				{
+					key = true;
+					key2 = true;
 					system("cls");
 					cout << "중복되는 숫자 입니다. 다시 입력해주세요." << endl;
 					RemainNumber();
 				}
-				else
-				{
-					break;
-				}
+				else key2 = false;
 			}
-		} // Need Fix
+
+			if (i == 0)
+				key2 = false;
+		}
 
 		input.push_back(input_int);
 
